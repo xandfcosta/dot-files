@@ -1,0 +1,8 @@
+profile docked {
+    output "AOC 24G2W1G4 ATNM4XA001012" mode 1920x1080 position 0,0
+    output eDP-1 disable
+}
+
+profile undocked {
+  output eDP-1 enable scale 1.2
+} 

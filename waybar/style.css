@@ -33,6 +33,7 @@ tooltip {
 #temperature,
 #custom-fans,
 #network,
+#bluetooth,
 #pulseaudio {
   margin: 6px 6px 6px 0px;
   padding: 2px 8px;
@@ -86,6 +87,7 @@ tooltip {
 #language,
 #backlight,
 #temperature,
+#bluetooth,
 #pulseaudio {
   background-color: #191724; /* was @base */
   border: 2px solid #403d52; /* was @overlay */
@@ -95,6 +97,8 @@ tooltip {
 #cpu.critical,
 #memory.critical,
 #temperature.critical,
+#bluetooth.off,
+#bluetooth.disabled,
 #custom-fans.off,
 #custom-fans {
   background-color: #191724; /* was @gold */

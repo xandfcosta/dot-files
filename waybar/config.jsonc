@@ -3,20 +3,23 @@
   "reload_style_on_change": true,
   "modules-left": [
     "hyprland/workspaces",
-    "hyprland/language",
+    // "hyprland/language",
     "cpu",
     "memory",
     "temperature",
   ],
-  "modules-center": ["clock", "tray"],
+  "modules-center": [
+    "clock",
+    "tray"
+  ],
   "modules-right": [
     "custom/fans",
     "backlight",
     "pulseaudio",
     "network",
+    "bluetooth",
     "battery",
   ],
-
   "hyprland/workspaces": {
     "on-click": "activate",
     "on-scroll-up": "hyprctl dispatch workspace e-1",
@@ -25,12 +28,10 @@
       "*": 3, // 5 workspaces by default on every monitor
     },
   },
-
   "hyprland/language": {
     "format": "󰌌 {}",
     "keyboard-name": "at-translated-set-2-keyboard",
   },
-
   "clock": {
     "format": "󰥔 {:%H:%M}",
     "format-alt": "󰃮 {:%A, %d %B}",
@@ -50,19 +51,20 @@
       },
     },
   },
-
   "tray": {
     "icon-size": 18,
     "spacing": 5,
   },
-
   "backlight": {
     "format": "{icon} {percent}%",
-    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "format-icons": [
+      "󰃞",
+      "󰃟",
+      "󰃠"
+    ],
     "on-click": "brightnessctl set +5%",
     "on-click-right": "brightnessctl set 5%-",
   },
-
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-bluetooth": "󰂰 {volume}%",
@@ -75,14 +77,17 @@
       "phone": "󰏲",
       "portable": "󰄝",
       "car": "󰄋",
-      "default": ["󰕿", "󰖀", "󰕾"],
+      "default": [
+        "󰕿",
+        "󰖀",
+        "󰕾"
+      ],
     },
     "on-click": "pavucontrol",
     "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +2%",
     "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -2%",
   },
-
   "network": {
     "format-wifi": "󰖩 {essid} {signalStrength}%",
     "format-ethernet": "󰈀 {ifname}",
@@ -91,7 +96,13 @@
     "format-alt": "{ifname}: {ipaddr}/{cidr}",
     "tooltip-format": "{ifname}: {ipaddr}",
   },
-
+  "bluetooth": {
+    "format-on": "󰂰",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "format-connected": " {device_alias}",
+    "on-click": "blueman-manager"
+  },
   "battery": {
     "states": {
       "good": 95,
@@ -102,27 +113,39 @@
     "format-charging": "󰂄 {capacity}%",
     "format-plugged": "󰚥 {capacity}%",
     "format-alt": "{icon} {time}",
-    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+    "format-icons": [
+      "󰂎",
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
+    ],
   },
-
   "cpu": {
     "format": "󰍛 {usage}%",
     "tooltip": true,
     "interval": 1,
   },
-
   "memory": {
     "format": "󰘚 {}%",
     "interval": 1,
   },
-
   "temperature": {
     "hwmon-path": "/sys/devices/platform/PNP0C14:02/wmi_bus/wmi_bus-PNP0C14:02/F1DDEE52-063C-4784-A11E-8A06684B9B01/hwmon/hwmon5/temp1_input",
     "critical-threshold": 80,
     "format": "{icon} {temperatureC}°C",
-    "format-icons": ["󱃃", "󰔏", "󱃂"],
+    "format-icons": [
+      "󱃃",
+      "󰔏",
+      "󱃂"
+    ],
   },
-
   "custom/fans": {
     "exec": "/home/kaezr/dotfiles/scripts/fancheck.sh",
     "format": "Fans {icon} ",
