@@ -6,35 +6,41 @@
     progress_bar_max_width = 380
     progress_bar_corner_radius = 2
 
-    padding = 10
-    horizontal_padding = 10
+    padding = 6 
+    horizontal_padding = 6
+    text_icon_padding = 6
     frame_width = 1
     gap_size = 3
-    font = "JetBrainsMono Nerd Font 14"
+    font = "JetBrainsMono Nerd Font 12"
 
+    min_icon_size = 32
+    max_icon_size = 64
+    icon_corner_radius = 6
+    icon_corner = all
     icon_theme = "rose-pine-icons"
     enable_recursive_icon_lookup = true
-    corner_radius = 2
+    corner_radius = 6
+    corners = all
 
-    background = "#26233a"
-    foreground = "#e0def4"
+    background = "#171c24"
+    foreground = "#31748f"
 
 [urgency_low]
-    background = "#26273d"
-    highlight = "#31748f"
-    frame_color = "#31748f"
+    background = "#171c24"
+    highlight = "#534a3d"
+    frame_color = "#534a3d"
     default_icon = "dialog-information"
-    format = "<b><span foreground='#31748f'>%s</span></b>\n%b"
+    format = "<b><span foreground='#e7e0a7'>%s</span></b>\n%b"
 
 [urgency_normal]
-    background = "#362e3c"
+    background = "#171c24"
     highlight = "#f6c177"
     frame_color = "#f6c177"
     default_icon = "dialog-warning"
     format = "<b><span foreground='#f6c177'>%s</span></b>\n%b"
 
 [urgency_critical]
-    background = "#35263d"
+    background = "#171c24"
     highlight = "#eb6f92"
     frame_color = "#eb6f92"
     default_icon = "dialog-error"
