@@ -10,10 +10,10 @@
   ],
   "modules-center": [
     "clock",
-    "tray"
+    "tray",
+    "custom/spotify-track"
   ],
   "modules-right": [
-    "custom/fans",
     "backlight",
     "pulseaudio",
     "network",
@@ -54,6 +54,7 @@
   "tray": {
     "icon-size": 18,
     "spacing": 5,
+    "show-passive-items": true
   },
   "backlight": {
     "format": "{icon} {percent}%",
@@ -146,16 +147,15 @@
       "󱃂"
     ],
   },
-  "custom/fans": {
-    "exec": "/home/kaezr/dotfiles/scripts/fancheck.sh",
-    "format": "Fans {icon} ",
+  "custom/spotify-track": {
+    "exec": "/home/xand/dot-files/spotify-track.sh",
+    "format": "{icon} {text}",
     "format-icons": {
-      "on": "",
-      "off": "󰠝",
+      "playing": "",
+      "paused": "",
     },
-    "on-click": "sudo /home/kaezr/dotfiles/scripts/cool.sh on",
-    "on-click-right": "sudo /home/kaezr/dotfiles/scripts/cool.sh off",
-    "interval": 5,
+    "interval": 1,
     "return-type": "json",
-  },
+    "hide-empty-text": true
+  }
 }
