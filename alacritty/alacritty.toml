@@ -1,0 +1,10 @@
+[general]
+import = [
+	"~/.config/alacritty/themes/themes/gruvbox_material_hard_dark.toml",
+]
+
+[window]
+opacity = 0.9
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font" }
