@@ -2,25 +2,36 @@
 	"layer": "top",
 	"reload_style_on_change": true,
 	"modules-left": [
-		"hyprland/workspaces",
-		// "hyprland/language",
-		"cpu",
-		"memory",
-		"temperature",
+		"clock",
 	],
 	"modules-center": [
-		"clock",
+		"hyprland/workspaces",
 		"custom/spotify-track"
 	],
 	"modules-right": [
 		"tray",
-		"idle_inhibitor",
-		"backlight",
-		"pulseaudio",
-		"network",
-		"bluetooth",
-		"battery",
+		"group/hardware",
+		"group/system"
 	],
+	"group/hardware": {
+		"orientation": "horizontal",
+		"modules": [
+			"idle_inhibitor",
+			"cpu",
+			"memory",
+			"temperature",
+			"battery"
+		],
+	},
+	"group/system": {
+		"orientation": "horizontal",
+		"modules": [
+			"pulseaudio",
+			"network",
+			"bluetooth",
+			"backlight"
+		],
+	},
 	"hyprland/workspaces": {
 		"on-click": "activate",
 		"on-scroll-up": "hyprctl dispatch workspace e-1",
@@ -34,7 +45,7 @@
 		"keyboard-name": "at-translated-set-2-keyboard",
 	},
 	"clock": {
-		"format": "{:%H:%M - %A, %d %B}",
+		"format": "  {:%H:%M  󰃮 %A, %d %B}",
 		"format-alt": "󰃮 {:%A, %d %B}",
 		"tooltip-format": "<tt><small>{calendar}</small></tt>",
 		"calendar": {

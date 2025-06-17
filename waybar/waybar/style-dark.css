@@ -10,13 +10,13 @@
 	min-height: 0;
 	font-family: "JetBrainsMono Nerd Font", monospace;
 	font-weight: bold;
-	font-size: 14px;
+	font-size: 12px;
 	padding: 0;
 }
 
 window#waybar {
-  background: transparent;
-  border: none;
+	  background: transparent;
+	  border: none;
 }
 
 tooltip {
@@ -24,14 +24,23 @@ tooltip {
 	border-radius: 12px;
 }
 
+.modules-left {
+	margin: 0px 0px 0px 2px;
+}
+
+.modules-right {
+	margin: 0px 2px 0px 0px;
+}
+
 .modules-center {
-	margin: 0px;
-	padding: 2px 10px;
-	border-radius: 0px 0px 20px 20px;
+	margin: 2px 2px 0px 2px;
+	border-radius: 12px;
 	box-shadow: 0 0 5px alpha(@background, 0.5);
 	background-color: @background;
 }
 
+#hardware,
+#system,
 #workspaces,
 #custom-spotify-track,
 #tray,
@@ -48,7 +57,7 @@ tooltip {
 #bluetooth,
 #idle_inhibitor,
 #pulseaudio {
-	margin: 4px 2px;
+	margin: 2px 2px 0px 2px;
 	padding: 2px 10px;
 	border-radius: 12px;
 	background-color: @background;
@@ -56,10 +65,10 @@ tooltip {
 }
 
 #workspaces button {
-  all: initial;
-  min-width: 0;
-  padding: 2px 10px;
-  color: @secondary;
+	all: initial;
+	min-width: 0;
+	padding: 2px 10px;
+	color: @secondary;
 }
 
 #workspaces button.active {
