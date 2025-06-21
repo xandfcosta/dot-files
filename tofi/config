@@ -1,0 +1,14 @@
+width = 100%
+height = 100%
+border-width = 0
+outline-width = 0
+padding-left = 35%
+padding-top = 35%
+result-spacing = 25
+num-results = 10
+font = monospace
+font-size = 16
+background-color = #000A
+
+text-color = #ffd3c8
+selection-color = #fd6f75
