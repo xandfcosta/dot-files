@@ -1,3 +1,5 @@
+@import 'dark.css';
+
 * {
   border: none;
   border-radius: 0;
@@ -29,6 +31,7 @@ tooltip {
 #custom-spotify-track,
 #network,
 #bluetooth,
+#idle_inhibitor,
 #pulseaudio {
   margin: 6px 6px 6px 0px;
   padding: 2px 8px;
@@ -61,7 +64,7 @@ tooltip {
 #clock {
   background-color: #121c24; /* was @overlay */
   border: 2px solid #524a3d; /* was @highlightMed */
-  color: #f4f0de; /* was @text */
+  color: @primary /* was @text */
 }
 
 #custom-spotify-track,
@@ -85,6 +88,7 @@ tooltip {
 #backlight,
 #temperature,
 #bluetooth,
+#idle_inhibitor,
 #pulseaudio {
   background-color: #121c24; /* was @base */
   border: 2px solid #524a3d; /* was @overlay */
@@ -95,9 +99,7 @@ tooltip {
 #memory.critical,
 #temperature.critical,
 #bluetooth.off,
-#bluetooth.disabled,
-#custom-fans.off,
-#custom-fans {
+#bluetooth.disabled {
   background-color: #121c24; /* was @gold */
   border: 2px solid #eb6f92; /* was @subtle */
   color: #eb6f92; /* was @love */
@@ -109,4 +111,8 @@ tooltip {
   background-color: #121c24; /* was @gold */
   border: 2px solid #eb6f92; /* was @gold */
   color: #eb6f92; /* was @love */
+}
+
+#idle_inhibitor.deactivated {
+  color: #524a3d
 }
