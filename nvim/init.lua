@@ -18,7 +18,20 @@ rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
+  {
+    'nmac427/guess-indent.nvim',
+    config = function()
+      require('guess-indent').setup {
+        auto_cmd = true,
+        buftype_exclude = {
+          'help',
+          'nofile',
+          'terminal',
+          'prompt',
+        },
+      }
+    end,
+  }, -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -280,6 +293,19 @@ require('lazy').setup({
           -- or a suggestion from your LSP for this to activate.
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
+          map('grA', function()
+            local cursor_pos = vim.api.nvim_win_get_cursor(0)
+
+            vim.lsp.buf.code_action {
+              range = {
+                start = { 1, 0 }, -- start at line 1, column 0
+                ['end'] = { vim.fn.line '$', 0 }, -- end at last line, column 0
+              },
+            }
+
+            vim.api.nvim_win_set_cursor(0, cursor_pos)
+          end, '[G]oto Code [A]ction For Whole File', { 'n', 'x' })
+
           -- Find references for the word under your cursor.
           map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
@@ -407,6 +433,7 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --:        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
       local servers = {
         -- clangd = {},
         -- gopls = {},
@@ -418,12 +445,13 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        ts_ls = {},
-        cssls = {},
+        -- ts_ls = {},
         tailwindcss = {},
         dockerls = {},
-        jsonls = {},
         yamlls = {},
+        biome = {
+          cmd = { 'biome', 'lsp' },
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -475,6 +503,21 @@ require('lazy').setup({
         },
       }
     end,
+  },
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {
+      settings = {
+        expose_as_code_actions = 'all',
+        jsx_close_tag = {
+          enable = true,
+        },
+        tsserver_file_preferences = {
+          importModuleSpecifierPreference = 'non-relative',
+        },
+      },
+    },
   },
 
   { -- Autoformat
@@ -628,6 +671,7 @@ require('lazy').setup({
     priority = 1000,
     config = function()
       vim.g.gruvbox_material_enable_italic = true
+      vim.g.gruvbox_material_transparent_background = 1
       vim.cmd.colorscheme 'gruvbox-material'
     end,
   },
@@ -709,7 +753,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
