@@ -10,6 +10,7 @@ return {
         dockerls = {},
         yamlls = {},
         lua_ls = {},
+        gopls = {},
       },
     },
   },

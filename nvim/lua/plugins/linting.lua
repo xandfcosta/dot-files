@@ -4,10 +4,10 @@ return {
     opts = {
       -- Event to trigger linters
       linters_by_ft = {
-        javascript = { "biome" },
-        javascriptreact = { "biome" },
-        typescript = { "biome" },
-        typescriptreact = { "biome" },
+        javascript = { "biomejs" },
+        javascriptreact = { "biomejs" },
+        typescript = { "biomejs" },
+        typescriptreact = { "biomejs" },
       },
       -- LazyVim extension to easily override linter options
       -- or add custom linters.
@@ -21,9 +21,9 @@ return {
         --     return vim.fs.find({ "selene.toml" }, { path = ctx.filename, upward = true })[1]
         --   end,
         -- },
-        biomejs = {
+        biomejsjs = {
           condition = function(ctx)
-            return vim.fs.find({ "biome.json" }, { path = ctx.filename, upward = true })[1]
+            return vim.fs.find({ "biomejs.json" }, { path = ctx.filename, upward = true })[1]
           end,
         },
       },

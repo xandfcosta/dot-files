@@ -9,6 +9,7 @@ return {
       typescriptreact = { "biome" },
       json = { "biome" },
       css = { "biome" },
+      html = { "biome" },
     },
   },
 }

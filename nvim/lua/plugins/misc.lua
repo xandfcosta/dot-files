@@ -13,4 +13,17 @@ return {
     main = "ibl",
     opts = {},
   },
+
+  {
+    "nmac427/guess-indent.nvim",
+    opts = {
+      auto_cmd = true,
+      buftype_exclude = {
+        "help",
+        "nofile",
+        "terminal",
+        "prompt",
+      },
+    },
+  }, -- Detect tabstop and shiftwidth automatically
 }

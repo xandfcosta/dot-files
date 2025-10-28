@@ -4,6 +4,10 @@ return {
     lazy = true,
     name = "catppuccin",
     opts = {
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+      },
       lsp_styles = {
         underlines = {
           errors = { "undercurl" },
