@@ -23,7 +23,7 @@ return {
         -- },
         biomejsjs = {
           condition = function(ctx)
-            return vim.fs.find({ "biomejs.json" }, { path = ctx.filename, upward = true })[1]
+            return vim.fs.find({ "biome.json" }, { path = ctx.filename, upward = true })[1]
           end,
         },
       },

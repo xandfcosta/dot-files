@@ -26,4 +26,11 @@ return {
       },
     },
   }, -- Detect tabstop and shiftwidth automatically
+
+  {
+    "folke/snacks.nvim",
+    opts = {
+      scroll = { enabled = false },
+    },
+  },
 }
