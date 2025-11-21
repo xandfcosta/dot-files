@@ -1,0 +1,2 @@
+# ⚠️ Replace "AC*" with your adapter name if necessary
+SUBSYSTEM=="power_supply", KERNEL=="AC*", ACTION=="change", RUN+="/usr/local/bin/power-profile-auto.sh"
