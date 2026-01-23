@@ -16,7 +16,7 @@ return {
                 variableTypes = { enabled = false },
               },
               preferences = {
-                importModuleSpecifierPreference = "non-relative",
+                importModuleSpecifier = "non-relative",
               },
             },
             javascript = {
@@ -29,7 +29,7 @@ return {
                 variableTypes = { enabled = false },
               },
               preferences = {
-                importModuleSpecifierPreference = "non-relative",
+                importModuleSpecifier = "non-relative",
               },
             },
           },
@@ -47,17 +47,4 @@ return {
       },
     },
   },
-
-  -- {
-  --   "pmizio/typescript-tools.nvim",
-  --   dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-  --   opts = {
-  --     settings = {
-  --       expose_as_code_actions = "all",
-  --       tsserver_file_preferences = {
-  --         importModuleSpecifierPreference = "non-relative",
-  --       },
-  --     },
-  --   },
-  -- },
 }

@@ -12,6 +12,9 @@ return {
         css = { "biome" },
         html = { "biome" },
       },
+      default_format_opts = {
+        lsp_format = "fallback",
+      },
     },
   },
 }

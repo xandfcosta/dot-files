@@ -10,3 +10,6 @@ vim.o.signcolumn = "yes"
 vim.o.inccommand = "split"
 vim.o.cursorline = true
 vim.o.scrolloff = 10
+
+-- Enable this option to avoid conflicts with Prettier.
+vim.g.lazyvim_prettier_needs_config = true
