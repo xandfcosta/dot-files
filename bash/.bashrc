@@ -17,7 +17,7 @@ dev() {
         tmux detach
     fi
 
-    tmux new-session -A -s dev -c ~/projects/
+    tmux new -A -s dev -c ~/projects/ 
 }
 
 
@@ -47,4 +47,14 @@ wavoip_nodes() {
     tmux a -t wavoip
 }
 
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
 . "$HOME/.local/share/../bin/env"
+
+fastfetch
