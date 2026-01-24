@@ -4,68 +4,52 @@
   background-color: @background;
   color: @foreground;
 
-  border: none;
-  border-radius: 0;
-  min-height: 0;
   font-family: 'JetBrainsMonoNL Nerd Font Mono';
   font-size: 14px;
+  font-weight: bold;
+  padding: 0px;
+  margin: 0px;
 }
 
 .modules-left {
-  margin-left: 8px;
+  margin-left: 4px;
 }
 
 .modules-right {
-  margin-right: 8px;
+  margin-right: 4px;
+}
+
+.module {
+  border-bottom-width: 2px;
+  border-bottom-color: @foreground;
+  border-bottom-style: solid;
+  padding: 0px 6px;
+  margin: 0px 4px;
+}
+
+#workspaces,
+#custom-expand-icon,
+#custom-spotify,
+#custom-spotatui,
+#clock {
+  border: none;
 }
 
 #workspaces button {
   all: initial;
-  padding: 0 6px;
-  margin: 0 1.5px;
-  min-width: 9px;
+  margin: 0 5px;
 }
 
 #workspaces button.empty {
   opacity: 0.5;
 }
 
-#cpu,
-#battery,
-#pulseaudio,
-#custom-omarchy,
-#custom-screenrecording-indicator,
 #custom-update {
-  min-width: 12px;
-  margin: 0 7.5px;
-}
-
-#tray {
-  margin-right: 16px;
-}
-
-#bluetooth {
-  margin-right: 17px;
-}
-
-#network {
-  margin-right: 13px;
-}
-
-#custom-expand-icon {
-  margin-right: 18px;
+  font-size: 12px;
 }
 
 tooltip {
   padding: 2px;
-}
-
-#custom-update {
-  font-size: 10px;
-}
-
-#clock {
-  margin-left: 5px;
 }
 
 .hidden {
@@ -83,15 +67,3 @@ tooltip {
   color: #a55555;
 }
 
-#custom-spotify {
-  margin-left: 20px;
-}
-
-#custom-voxtype {
-  min-width: 12px;
-  margin: 0 0 0 7.5px;
-}
-
-#custom-voxtype.recording {
-  color: #a55555;
-}
