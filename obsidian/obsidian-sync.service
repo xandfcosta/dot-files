@@ -1,0 +1,15 @@
+[Unit]
+Description=Obsidian Vault Sync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h
+ExecStart=/usr/local/bin/obsidian-sync.sh
+ExecStop=/usr/local/bin/obsidian-sync.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target
+
