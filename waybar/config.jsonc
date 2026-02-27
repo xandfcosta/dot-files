@@ -4,16 +4,21 @@
   "position": "top",
   "spacing": 0,
   "height": 26,
-  "modules-left": ["hyprland/workspaces", "custom/spotify", "custom/spotatui"],
-  "modules-center": ["clock", "custom/update", "custom/voxtype", "custom/screenrecording-indicator"],
+  "modules-left": ["hyprland/workspaces", "clock", "custom/screenrecording-indicator"],
+  "modules-center": ["group/player"],
   "modules-right": [
     "group/tray-expander",
+    "custom/update",
+    "idle_inhibitor",
     "custom/monitor",
     "bluetooth",
     "network",
+    "backlight",
     "pulseaudio",
     "cpu",
-    "battery"
+    "battery",
+"custom/idle-indicator",
+"custom/notification-silencing-indicator"
   ],
   "hyprland/workspaces": {
     "on-click": "activate",
@@ -50,7 +55,6 @@
     "signal": 7,
     "interval": 3600
   },
-
   "cpu": {
     "format": "󰍛 {usage}%",
     "interval": 5,
@@ -111,6 +115,7 @@
     "format-muted": "",
     "format-icons": {
       "headphone": "",
+      "headset": "",
       "default": ["", "", ""]
     }
   },
@@ -132,28 +137,63 @@
     "signal": 8,
     "return-type": "json"
   },
+  "custom/idle-indicator": {
+    "on-click": "omarchy-toggle-idle",
+    "exec": "$OMARCHY_PATH/default/waybar/indicators/idle.sh",
+    "signal": 9,
+    "return-type": "json"
+  },
+  "custom/notification-silencing-indicator": {
+    "on-click": "omarchy-toggle-notification-silencing",
+    "exec": "$OMARCHY_PATH/default/waybar/indicators/notification-silencing.sh",
+    "signal": 10,
+    "return-type": "json"
+  },
   "tray": {
-    "icon-size": 13
+    "icon-size": 13,
+    "spacing": 12
   },
   "custom/monitor": {
     "format": "󰹑",
     "tooltip": "Display Settings",
     "on-click": "omarchy-launch-or-focus-tui hyprdynamicmonitors tui"
   },
-  "custom/spotify": {
-      "exec": "/usr/bin/python3 ~/.config/waybar/custom/mediaplayer.py --player spotify",
-      "format": "{}",
-      "return-type": "json",
-      "on-click": "playerctl play-pause",
-      "on-scroll-up": "playerctl next",
-      "on-scroll-down": "playerctl previous"
+  "group/player": {
+      "orientation": "horizontal",
+      "modules": [
+        "image#album-art",
+        "mpris"
+      ]
+	},
+  "mpris": {
+    "format": "{title} - {artist} {player_icon}",
+    "format-paused": "{status_icon} <i>{dynamic}</i>",
+    "player-icons": {
+      "default": "▶",
+      "spotify": ""
+    },
+    "status-icons": {
+      "paused": "⏸"
+    },
+    "ignored-players": ["firefox", "zen"]
   },
-  "custom/spotatui": {
-      "exec": "/usr/bin/python3 ~/.config/waybar/custom/mediaplayer.py --player spotatui",
-      "format": "{}",
-      "return-type": "json",
-      "on-click": "playerctl play-pause",
-      "on-scroll-up": "playerctl next",
-      "on-scroll-down": "playerctl previous"
+  "image#album-art": {
+     "exec":"~/.config/waybar/scripts/album_art.sh",
+     "size": 24,
+     "interval": 5,
   },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+        "activated": "",
+        "deactivated": ""
+    }
+  },
+  "backlight": {
+      "device": "intel_backlight",
+      "format": "{percent}% {icon}",
+      "format-icons": ["", ""],
+      "on-scroll-up": "brightnessctl set +5%",
+      "on-scroll-down": "brightnessctl set 5%-"
+  }
 }

@@ -5,6 +5,7 @@ config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"
 font-family = "JetBrainsMonoNL Nerd Font Mono"
 font-style = Regular
 font-size = 10
+# adjust-cell-height = -2
 
 # Window
 window-padding-x = 14
@@ -27,4 +28,7 @@ keybind = super+control+shift+alt+arrow_left=resize_split:left,100
 keybind = super+control+shift+alt+arrow_right=resize_split:right,100
 
 # Slowdown mouse scrolling
-mouse-scroll-multiplier = 1.5
+# mouse-scroll-multiplier = 1.5
+
+# Fix general slowness on hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
+async-backend = epoll

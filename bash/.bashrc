@@ -21,7 +21,7 @@ dev() {
 }
 
 
-wavoip_nodes() {
+wavoip() {
     command -v tmux >/dev/null 2>&1 || { echo "tmux is not installed"; return 1; }
 
     if [ -n "$TMUX" ]; then
@@ -35,16 +35,24 @@ wavoip_nodes() {
     done
 
     tmux new-window -t wavoip -n MYSQL
-    tmux new-window -t wavoip -n MONGO
 
     tmux send-keys -t wavoip:1 "ssh root@141.11.73.91"
     tmux send-keys -t wavoip:2 "ssh root@45.139.208.59"
     tmux send-keys -t wavoip:3 "ssh root@141.11.73.94"
     tmux send-keys -t wavoip:4 "ssh root@45.139.208.61"
     tmux send-keys -t wavoip:MYSQL "lazysql" C-m
-    tmux send-keys -t wavoip:MONGO "vi-mongo" C-m
 
     tmux a -t wavoip
+}
+
+obsidian_nvim() {
+    command -v tmux >/dev/null 2>&1 || { echo "tmux is not installed"; return 1; }
+
+    if [ -n "$TMUX" ]; then
+        tmux detach
+    fi
+
+    tmux new -A -s obsidian -c ~/Documents/obsidian-vaults/Personal/ "nvim ."
 }
 
 function y() {
@@ -56,5 +64,3 @@ function y() {
 }
 
 . "$HOME/.local/share/../bin/env"
-
-fastfetch
