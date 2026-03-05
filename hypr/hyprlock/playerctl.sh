@@ -18,7 +18,7 @@ get_source_info_symbol() {
 	trackid=$(get_metadata "playerName")
 	if [[ "$trackid" == *"firefox"* ]]; then
 		echo -e "󰈹"
-	elif [[ "$trackid" == *"spotify"* ]]; then
+	elif [[ "$trackid" == *"spotify"* || "$trackid" == *"ncspot"* ]]; then
 		echo -e ""
 	elif [[ "$trackid" == *"chromium"* ]]; then
 		echo -e ""
@@ -31,7 +31,7 @@ get_source_info() {
 	trackid=$(get_metadata "playerName")
 	if [[ "$trackid" == *"firefox"* ]]; then
 		echo -e "󰈹  Firefox"
-	elif [[ "$trackid" == *"spotify"* ]]; then
+	elif [[ "$trackid" == *"spotify"* || "$trackid" == *"ncspot"* ]]; then
 		echo -e "  Spotify"
 	elif [[ "$trackid" == *"spotatui"* ]]; then
 		echo -e "  Spotify"
@@ -46,7 +46,7 @@ get_source_info() {
 truncate_with_ellipsis() {
 	text=$1
 	max_length=$2
-	if [ ${#text} -gt $max_length ]; then
+	if [ ${#text} -gt "$max_length" ]; then
 		echo "${text:0:$((max_length - 3))}..."
 	else
 		echo "$text"

@@ -3,12 +3,12 @@
 * {
   background-color: @background;
   color: @foreground;
-
   font-family: 'JetBrainsMonoNL Nerd Font Propo';
   font-size: 14px;
-  font-weight: bold;
-  padding: 0px;
-  margin: 0px;
+}
+
+window#waybar{
+    all:unset;
 }
 
 .modules-left {
@@ -20,11 +20,11 @@
 }
 
 .module {
-  border-bottom-width: 2px;
+  border-bottom-width: 1px;
   border-bottom-color: @foreground00;
   border-bottom-style: solid;
   padding: 0px 4px;
-  margin: 2px 4px;
+  margin: 2px 2px;
 }
 
 #mpris,
@@ -36,6 +36,7 @@
 #clock {
   border: none;
 }
+
 
 #player * {
   margin: 0px;

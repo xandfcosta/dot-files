@@ -22,5 +22,3 @@ rm discord.tar.gz
 echo "Installing vencord"
 bash -c "$(curl -sS https://vencord.dev/install.sh)"
 
-echo "Running Discord"
-discord &
