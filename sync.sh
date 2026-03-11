@@ -10,6 +10,7 @@ dirs["hypr"]="$dot_dir/hypr"
 dirs["hyprdynamicmonitors"]="$dot_dir/hyprdynamicmonitors/"
 dirs["nvim"]="$dot_dir/nvim/"
 dirs["waybar"]="$dot_dir/waybar/"
+dirs["easyeffects"]="$dot_dir/easyeffects/"
 
 declare -A files
 files[".bashrc"]="$HOME/.bashrc"
