@@ -16,7 +16,7 @@ return {
         html = { "biome" },
       },
       default_format_opts = {
-        async = true,
+        async = false,
         lsp_format = "fallback",
       },
     },

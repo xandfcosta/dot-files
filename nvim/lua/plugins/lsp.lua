@@ -4,23 +4,6 @@ return {
     ---@class PluginLspOpts
     opts = {
       servers = {
-        -- vtsls = {
-        --   capabilities = { offsetEncoding = { "utf-8" } },
-        --   javascript = {
-        --     inlayHints = {
-        --       enumMemberValues = { enabled = true },
-        --       functionLikeReturnTypes = { enabled = true },
-        --       parameterNames = { enabled = "literals" },
-        --       parameterTypes = { enabled = false },
-        --       propertyDeclarationTypes = { enabled = false },
-        --       variableTypes = { enabled = false },
-        --     },
-        --     preferences = {
-        --       importModuleSpecifier = "non-relative",
-        --     },
-        --   },
-        --   filetypes = { "javascriptreact", "javascript.jsx" },
-        -- },
         biome = {},
         tailwindcss = {
           filetypes = { "javascriptreact", "typescriptreact", "javascript.jsx", "typescript.tsx" },
