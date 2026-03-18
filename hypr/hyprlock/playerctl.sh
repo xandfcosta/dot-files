@@ -33,8 +33,6 @@ get_source_info() {
 		echo -e "󰈹  Firefox"
 	elif [[ "$trackid" == *"spotify"* || "$trackid" == *"ncspot"* ]]; then
 		echo -e "  Spotify"
-	elif [[ "$trackid" == *"spotatui"* ]]; then
-		echo -e "  Spotify"
 	elif [[ "$trackid" == *"chromium"* ]]; then
 		echo -e "  Chrome"
 	else
