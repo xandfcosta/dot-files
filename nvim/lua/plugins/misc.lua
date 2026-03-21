@@ -33,4 +33,8 @@ return {
       scroll = { enabled = false },
     },
   },
+
+  {
+    "norcalli/nvim-colorizer.lua",
+  },
 }

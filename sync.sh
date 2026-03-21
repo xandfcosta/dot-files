@@ -1,38 +1,75 @@
 #! /bin/bash
 
+sync_dir() {
+  target_dir="$1/$2"
+  sync_dir="$git_dir/$2"
+
+  echo "Syncing dir $target_dir -> $sync_dir"
+
+  if ! [ -d "$target_dir" ]; then
+    echo "[!] Target dir don't exist ($target_dir)"
+    return
+  fi
+
+  if [ -d "$sync_dir" ]; then
+    echo "Sync dir already exists, removing..."
+    rm -r "$sync_dir"
+  else
+    echo "[!] Sync dir don't exist"
+    mkdir -p "$sync_dir"
+  fi
+
+  cp -r "$target_dir" "$sync_dir"
+}
+
+sync_file() {
+  target_file_path=$1
+  sync_dir="$git_dir/$2"
+  sync_file_name=$3
+
+  echo "Syncing file $target_file_path -> $sync_dir$sync_file_name"
+
+  if ! [ -f "$target_file_path" ]; then
+    echo "[!] Target file don't exist ($target_file_path)"
+    return
+  fi
+
+  if ! [ -d "$sync_dir" ]; then
+    echo "[!] Sync dir don't exist"
+    mkdir -p "$sync_dir"
+  fi
+
+  cp "$target_file_path" "$sync_dir/$sync_file_name"
+}
+
 config_dir="$HOME/.config"
-dot_dir="$HOME/dot-files"
+local_dir="$HOME/.local/share"
+git_dir="$HOME/dot-files"
 
-declare -A dirs
-dirs["alacritty"]="$dot_dir/alacritty/"
-dirs["ghostty"]="$dot_dir/ghostty/"
-dirs["hypr"]="$dot_dir/hypr"
-dirs["hyprdynamicmonitors"]="$dot_dir/hyprdynamicmonitors/"
-dirs["nvim"]="$dot_dir/nvim/"
-dirs["waybar"]="$dot_dir/waybar/"
-dirs["easyeffects"]="$dot_dir/easyeffects/"
+echo "Syncronization started"
+echo ""
 
-declare -A files
-files[".bashrc"]="$HOME/.bashrc"
-files["intel-undervolt.conf"]="$HOME/intel-undervolt/intel-undervolt.conf"
-files["tmux"]="$config_dir/tmux/tmux.conf"
+echo "Syncing folders"
 
-declare -A files_out
-files_out[".bashrc"]="$dot_dir/bash/.bashrc"
-files_out["intel-undervolt.conf"]="$dot_dir/intel-undervolt/intel-undervolt.conf"
-files_out["tmux"]="$dot_dir/tmux/tmux.conf"
+sync_dir "$config_dir" "ghostty/"
+sync_dir "$config_dir" "hypr/"
+sync_dir "$config_dir" "hyprdynamicmonitors/"
+sync_dir "$config_dir" "nvim/"
+sync_dir "$config_dir" "waybar/"
+sync_dir "$local_dir" "easyeffects/output/"
 
-echo "Syncing hole folders"
-for chave in "${!dirs[@]}"; do
-  echo "Syncing $chave | $config_dir/$chave -> ${dirs[$chave]}"
-  rm -r -f "${dirs[$chave]}"
-  cp -r "$config_dir/$chave" "${dirs[$chave]}"
-done
-
+echo ""
 echo "Syncing files"
-for chave in "${!files[@]}"; do
-  echo "Syncing $chave | ${files[$chave]} -> ${files_out[$chave]}"
-  cp "${files[$chave]}" "${files_out[$chave]}"
-done
 
-echo "Done"
+sync_file "$HOME/.bashrc" "bash/" ".bashrc"
+sync_file "$HOME/intel-undervolt/intel-undervolt.conf" "intel-undervolt" "intel-undervolt.conf"
+sync_file "$config_dir/tmux/tmux.conf" "tmux" "tmux.conf"
+
+echo ""
+echo "Pushing to github"
+
+git add .
+git commit -q -m "sync: $(date -u)"
+git push -q
+
+echo "Syncronization done"

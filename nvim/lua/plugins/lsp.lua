@@ -6,7 +6,7 @@ return {
       servers = {
         biome = {},
         tailwindcss = {
-          filetypes = { "javascriptreact", "typescriptreact", "javascript.jsx", "typescript.tsx" },
+          filetypes = { "javascriptreact", "typescriptreact" },
         },
         dockerls = {},
         yamlls = {},
