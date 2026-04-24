@@ -1,10 +1,9 @@
 [Unit]
 Description=Set power profile based on AC state at boot
-After=multi-user.target
 
 [Service]
 Type=oneshot
 ExecStart=/usr/local/bin/power-profile-auto.sh
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

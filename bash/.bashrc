@@ -11,18 +11,23 @@ source ~/.local/share/omarchy/default/bash/rc
 # alias p='python'
 
 dev() {
-    command -v tmux >/dev/null 2>&1 || { echo "tmux is not installed"; return 1; }
+    command -v tmux >/dev/null 2>&1 || {
+        echo "tmux is not installed"
+        return 1
+    }
 
     if [ -n "$TMUX" ]; then
         tmux detach
     fi
 
-    tmux new -A -s dev -c ~/projects/ 
+    tmux new -A -s dev -c ~/projects/
 }
 
-
 wavoip() {
-    command -v tmux >/dev/null 2>&1 || { echo "tmux is not installed"; return 1; }
+    command -v tmux >/dev/null 2>&1 || {
+        echo "tmux is not installed"
+        return 1
+    }
 
     if [ -n "$TMUX" ]; then
         tmux detach
@@ -42,25 +47,40 @@ wavoip() {
     tmux send-keys -t wavoip:4 "ssh root@45.139.208.61"
     tmux send-keys -t wavoip:MYSQL "lazysql" C-m
 
-    tmux a -t wavoip
+    if [ "$1" != "detach" ]; then
+        tmux a -t wavoip
+    fi
 }
 
 obsidian_nvim() {
-    command -v tmux >/dev/null 2>&1 || { echo "tmux is not installed"; return 1; }
+    command -v tmux >/dev/null 2>&1 || {
+        echo "tmux is not installed"
+        return 1
+    }
 
     if [ -n "$TMUX" ]; then
         tmux detach
     fi
 
-    tmux new -A -s obsidian -c ~/Documents/obsidian-vaults/Personal/ "nvim ."
+    tmux new -A -d -s obsidian -c ~/Documents/obsidian-vaults/Personal/ "nvim ."
+
+    if [ "$1" != "detach" ]; then
+        tmux a -t obsidian
+    fi
 }
 
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	command yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
+y() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    command yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd <"$tmp"
+    [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
+}
+
+work() {
+    wavoip detach
+    obsidian_nvim detach
+    dev
 }
 
 . "$HOME/.local/share/../bin/env"

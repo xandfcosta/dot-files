@@ -1,0 +1,9 @@
+[Unit]
+Description=Auto switch Easy Effects preset on P3 connection
+
+[Service]
+ExecStart=%h/dot-files/services/auto-preset-easyeffects/auto-detect-p3.sh
+Restart=always
+
+[Install]
+WantedBy=default.target
