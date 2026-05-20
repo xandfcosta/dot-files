@@ -1,31 +1,29 @@
 #!/bin/bash
-
 cd "$HOME/Documents/obsidian-vaults/" || exit
 
-if ! git diff --quiet; then
-  echo "There's changes, stashing it..."
+has_changes() {
+  git status --porcelain | grep -q "."
+}
+
+if has_changes; then
+  echo "There's local changes, stashing..."
   git add .
-  git stash push -q .
+  git stash push -q
 fi
 
-echo "Pulling new notes"
-git pull
+echo "Pulling new notes..."
+git pull origin
 
-git stash pop -q
+git stash pop -q 2>/dev/null
 
-if  git diff --quiet; then
+if ! has_changes; then
   echo "Nothing to sync, exiting..."
   exit
 fi
 
-echo "There's changes, syncing"
-git add .
+echo "There's changes, syncing..."
 TIMESTAMP=$(date +"%m-%d-%Y %H-%M-%S")
-echo "sync: $TIMESTAMP"
-
 git add .
 git commit -m "sync: $TIMESTAMP"
 git push -q
-
 echo "Sync was a success"
-

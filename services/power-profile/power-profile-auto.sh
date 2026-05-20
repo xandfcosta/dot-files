@@ -8,7 +8,7 @@ AC_PATH="/sys/class/power_supply/ACAD/online"
 set_profile() {
     case "$1" in
         "1") # AC connected
-            powerprofilesctl set performance
+            powerprofilesctl set balanced
             ;;
         "0") # AC disconnected
             powerprofilesctl set power-saver
