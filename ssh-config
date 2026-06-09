@@ -1,0 +1,66 @@
+Host sip-wavoip
+  HostName 141.11.73.93   
+  User root
+  Port 22
+  IdentityFile ~/.ssh/prod
+
+Host api-wavoip
+  HostName 141.11.73.92   
+  User root
+  Port 22
+  IdentityFile ~/.ssh/prod
+
+Host storage-wavoip
+  HostName 149.18.51.244  
+  User root
+  Port 22
+  IdentityFile ~/.ssh/prod
+
+Host node-21-wavoip
+  HostName 141.11.73.91   
+  User root
+  Port 22
+  IdentityFile ~/.ssh/prod
+
+Host node-22-wavoip
+  HostName 45.139.208.59  
+  User root
+  Port 22
+  IdentityFile ~/.ssh/prod
+
+Host node-23-wavoip
+  HostName 141.11.73.94   
+  User root
+  Port 22
+  IdentityFile ~/.ssh/prod
+
+Host node-24-wavoip
+  HostName 45.139.208.61  
+  User root
+  Port 22
+  IdentityFile ~/.ssh/prod
+
+Host node-25-wavoip
+  HostName 38.255.123.116
+  User root
+  Port 22
+  IdentityFile ~/.ssh/prod
+
+Host freeswitch-wavoip
+  HostName 38.255.123.115 
+  User root
+  Port 2222
+  IdentityFile ~/.ssh/prod
+
+Host sip-homolog-wavoip  
+  HostName 45.139.208.60 
+  User root
+  Port 22
+  IdentityFile ~/.ssh/homolog
+
+Host api-homolog-wavoip
+  HostName 141.11.73.212 
+  User root
+  Port 22
+  IdentityFile ~/.ssh/homolog
+
