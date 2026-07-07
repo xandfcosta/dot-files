@@ -14,6 +14,8 @@ object_path = "/org/freedesktop/UPower/devices/line_power_ACAD"
 [profiles.docked]
 config_file = "/home/xand/.config/hyprdynamicmonitors/hyprconfigs/docked.go.tmpl"
 config_file_type = "template"
+[profiles.docked.static_template_values]
+mode = "dual"  # external_only | dual  — toggle via `hdm-docked-toggle`
 [profiles.docked.conditions]
 
 [[profiles.docked.conditions.required_monitors]]

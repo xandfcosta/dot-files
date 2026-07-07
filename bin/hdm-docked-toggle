@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# omarchy:summary=Toggle docked display between external-only and dual (external + laptop)
+
+CONFIG="$HOME/.config/hyprdynamicmonitors/config.toml"
+
+current=$(grep -oP 'mode\s*=\s*"\K[^"]+' "$CONFIG" | head -1)
+
+if [[ "$current" == "dual" ]]; then
+  new="external_only"
+else
+  new="dual"
+fi
+
+sed -i -E "s/^(\s*mode\s*=\s*)\"[^\"]*\"/\1\"$new\"/" "$CONFIG"
+
+case "$new" in
+  dual)          label="Dual (external + laptop)" ;;
+  external_only) label="External only" ;;
+esac
+
+notify-send -u low "󰍹  Docked display" "$label"
