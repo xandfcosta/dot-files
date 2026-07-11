@@ -1,0 +1,10 @@
+# GPU priority for Hyprland/aquamarine.
+# First entry = primary renderer (compositor + everyday apps) = Intel iGPU.
+# Second = NVIDIA dGPU; required because the HDMI port is muxed to it
+# (external 1080p144 monitor). Also enables prime-run offload.
+#
+# Use /dev/dri/by-path/* (stable PCI-address symlinks), NOT raw cardN
+# (kernel probe order can shuffle card1/card2 between boots).
+#   pci-0000:00:02.0 = Intel UHD 630   (internal eDP)
+#   pci-0000:01:00.0 = NVIDIA GTX 1650 (HDMI-A-1)
+export AQ_DRM_DEVICES="/dev/dri/by-path/pci-0000:00:02.0-card:/dev/dri/by-path/pci-0000:01:00.0-card"

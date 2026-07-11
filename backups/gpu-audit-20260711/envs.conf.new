@@ -1,0 +1,21 @@
+# NVIDIA hybrid (Intel iGPU primary, NVIDIA dGPU on-demand via prime-run)
+#
+# The following block was auto-added by Omarchy's nvidia.sh. It forces the
+# NVIDIA driver GLOBALLY for VA-API video decode and GLX/OpenGL for EVERY app,
+# which defeats an iGPU-primary hybrid setup (higher idle power, Chromium/
+# XWayland/screenshare breakage). Disabled deliberately. NVIDIA offload is
+# handled per-app via `prime-run`, not globally.
+#
+# Note: this file is currently NOT sourced by ~/.config/hypr/hyprland.conf
+# (it sources the default envs.conf instead), so these were already inert.
+# Kept commented so a future migration re-sourcing this file can't silently
+# re-enable global NVIDIA.
+#
+# env = NVD_BACKEND,direct
+# env = LIBVA_DRIVER_NAME,nvidia
+# env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+
+# Optional: force Intel VA-API for hardware video decode on the iGPU.
+# Uncomment only after adding `source = ~/.config/hypr/envs.conf` to
+# hyprland.conf (else it has no effect). Requires intel-media-driver.
+# env = LIBVA_DRIVER_NAME,iHD
