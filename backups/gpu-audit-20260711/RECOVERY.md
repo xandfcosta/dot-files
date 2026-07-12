@@ -2,6 +2,44 @@
 
 Acer Nitro 5 AN515-54 · Intel UHD 630 (iGPU) + NVIDIA GTX 1650 (dGPU) · Omarchy/Hyprland.
 
+## ✅ FINAL OUTCOME (2026-07-12 00:17) — what to actually keep
+
+Working, stable config after the whole saga:
+- `~/.config/uwsm/env-hyprland` → `AQ_DRM_DEVICES="/dev/dri/card2:/dev/dri/card1"`
+  (RAW cardN — **NOT** by-path; see below).
+- `~/.config/hypr/envs.conf` → global NVIDIA block stays commented (harmless; file
+  isn't even sourced). iGPU primary, `prime-run` for offload.
+- `/etc/mkinitcpio.conf.d/nvidia.conf` → `MODULES+=(nvidia ...)` RESTORED (nvidia
+  early KMS). No `nvidia-pm.conf`, no `80-nvidia-pm.rules`.
+- Result: Intel primary, external HDMI 1080p@144 works, prime-run offload works,
+  dGPU idles ~3W (battery PM abandoned — see Option B).
+
+### ❌ Two mistakes this audit made — do not repeat
+1. **`AQ_DRM_DEVICES` by-path symlinks CRASH Hyprland here.** aquamarine matches
+   entries against udev `cardN` nodes; `/dev/dri/by-path/...` → `CBackend::create()
+   failed!` → Hyprland aborts at startup. Issue #1776 suggests named symlinks, but
+   on THIS setup **raw `card2:card1` is required**. (card2 = Intel 00:02.0,
+   card1 = NVIDIA 01:00.0.) The by-path value was never tested in a live session
+   before reboot, so it silently broke the desktop.
+2. **Battery PM (Option B) abandoned.** It DID fix the LUKS freeze (nvidia out of
+   initramfs → boots past LUKS), but once booting, the by-path crash surfaced and
+   the two got conflated. Even with by-path fixed, Option B's benefit (~3W idle) is
+   not worth the boot fragility. Keep nvidia early KMS + no PM.
+
+### Two distinct faults (they were conflated)
+- **Fault A — real LUKS freeze:** `NVreg_DynamicPowerManagement` param WITH nvidia
+  in the early initramfs froze the LUKS prompt (that boot never mounted root → no
+  journal). Fixed by removing nvidia from initramfs.
+- **Fault B — desktop crash:** `AQ_DRM_DEVICES` by-path → aquamarine `CBackend::create()
+  failed!`. Present in every booted session except the one that still ran the
+  original raw env. Fixed by restoring raw `card2:card1`.
+
+Journal proof: every recorded boot PASSED LUKS; the only crash-free session (boot
+-5, 41 min) was the one running raw env. So the initramfs change was never the
+desktop-breaker — the AQ env was.
+
+---
+
 ## ⚠️ POSTMORTEM: `NVreg_DynamicPowerManagement` froze the LUKS prompt
 
 **What happened:** after adding `/etc/modprobe.d/nvidia-pm.conf` with
@@ -109,8 +147,8 @@ laptop screen.
 |------|---------|
 | `envs.conf.orig`        | ORIGINAL `~/.config/hypr/envs.conf` (global NVIDIA env block) |
 | `envs.conf.new`         | edited version (block commented out) |
-| `env-hyprland.orig`     | ORIGINAL `~/.config/uwsm/env-hyprland` (`AQ_DRM_DEVICES` raw cardN) |
-| `env-hyprland.new`      | edited version (by-path symlinks) |
+| `env-hyprland.orig`     | ORIGINAL raw cardN — **this is the CORRECT/working value** |
+| `env-hyprland.new`      | by-path version — **BROKEN, crashes Hyprland (do not use)** |
 | `etc-modprobe.d-nvidia.conf` | untouched `/etc/modprobe.d/nvidia.conf` (`modeset=1`) for reference |
 
 ## To revert the USER config changes
