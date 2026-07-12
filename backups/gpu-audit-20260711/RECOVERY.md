@@ -41,18 +41,63 @@ does almost nothing on the nvidia driver without the NVreg param.
 menu pick a **snapshot** entry (limine-snapper) to boot a working rootfs, then
 undo the change and rebuild the UKI. No live-USB needed.
 
-### Option B (proper dGPU PM, deferred — do only with a snapshot ready)
+### Option B — dGPU runtime PM (STAGED 2026-07-11, reboot pending)
+
+Approved: LUKS unlock on internal panel is fine; changes staged, user reboots
+on own schedule. Goal: dGPU deep-suspends (RTD3) when idle/undocked.
+
+**Why this is safe (the kms-hook question):** removing nvidia from the early
+`MODULES` is *sufficient*. The `kms` initramfs hook only scans in-tree
+`/drivers/gpu/drm/`, but nvidia is out-of-tree at
+`/lib/modules/$(uname -r)/updates/dkms/nvidia*.ko.zst`, so kms will NOT re-add
+it. Intel i915 (in-tree) still gets early KMS and drives the LUKS prompt.
+
+**Staging commands (run in a real terminal, then reboot when ready):**
 ```bash
-# 1. remove nvidia from EARLY initramfs so the PM param applies post-LUKS:
-sudoedit /etc/mkinitcpio.conf.d/nvidia.conf     # delete/comment the MODULES+=(nvidia ...) line
-# 2. add the PM param (now applied when nvidia loads in the real system):
-echo 'options nvidia NVreg_DynamicPowerManagement=0x02' | sudo tee /etc/modprobe.d/nvidia-pm.conf
-# 3. rebuild UKI + verify fresh, then reboot:
+# 1. nvidia out of early initramfs (loads post-boot, param applies post-LUKS)
+sudo tee /etc/mkinitcpio.conf.d/nvidia.conf >/dev/null <<'EOF'
+# nvidia intentionally NOT early-loaded (froze LUKS prompt 2026-07-11).
+# MODULES+=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
+EOF
+# 2. runtime-PM module param
+sudo tee /etc/modprobe.d/nvidia-pm.conf >/dev/null <<'EOF'
+options nvidia NVreg_DynamicPowerManagement=0x02
+EOF
+# 3. allow PCI runtime suspend on the dGPU (udev fires post-boot)
+sudo tee /etc/udev/rules.d/80-nvidia-pm.rules >/dev/null <<'EOF'
+ACTION=="bind",   SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
+ACTION=="bind",   SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
+ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="on"
+ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="on"
+EOF
+# 4. rebuild UKI
 sudo limine-mkinitcpio
 ```
-Caveat: without early nvidia KMS the LUKS prompt shows only on the **internal
-panel** early (not the external HDMI, which is on the dGPU). Only matters if
-you unlock while docked with the lid closed.
+
+**Verification gate — MUST print OK before rebooting:**
+```bash
+cd /tmp && objcopy -O binary --only-section=.initrd /boot/EFI/Linux/omarchy_linux.efi ck.img && \
+( lsinitcpio ck.img | grep -qi nvidia && echo "!! ABORT: nvidia still in UKI — do NOT reboot" \
+  || echo "OK: nvidia absent from initramfs — safe to reboot" ); rm -f /tmp/ck.img
+```
+
+**Post-reboot verification:**
+```bash
+lsmod | grep nvidia                                          # loads post-boot
+hyprctl monitors | grep HDMI                                 # external still works
+# undock, idle ~30s:
+cat /sys/bus/pci/devices/0000:01:00.0/power/runtime_status   # → suspended
+cat /sys/bus/pci/devices/0000:01:00.0/power/control          # → auto
+```
+
+**Rollback:** at the limine menu pick a **snapshot** entry to boot a working
+rootfs, then restore `/etc/mkinitcpio.conf.d/nvidia.conf` (uncomment the
+MODULES line), `sudo rm /etc/modprobe.d/nvidia-pm.conf /etc/udev/rules.d/80-nvidia-pm.rules`,
+`sudo limine-mkinitcpio`, reboot.
+
+**Caveat:** without early nvidia KMS the LUKS prompt shows only on the internal
+panel (not the external HDMI, which is on the dGPU) — fine, unlock on the
+laptop screen.
 
 ## Hardware facts (verified)
 - `pci-0000:00:02.0` = Intel UHD 630 → drives internal panel `eDP-1`.
