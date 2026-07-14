@@ -66,6 +66,7 @@ sync_file "$HOME/intel-undervolt/intel-undervolt.conf" "intel-undervolt" "intel-
 sync_file "$config_dir/tmux/tmux.conf" "tmux" "tmux.conf"
 sync_file "$config_dir/omarchy/extensions/menu.sh" "omarchy/extensions" "menu.sh"
 sync_file "$HOME/.local/bin/hdm-docked-toggle" "bin" "hdm-docked-toggle"
+sync_file "$config_dir/uwsm/env-hyprland" "uwsm" "env-hyprland"
 
 echo ""
 echo "Pushing to github"
