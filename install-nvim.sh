@@ -71,18 +71,16 @@ install_nvim() {
 # 2. Sparse-clone only the config subdir
 # ---------------------------------------------------------------------------
 clone_config() {
-  if [ -d "${CLONE_DIR}/.git" ]; then
-    log "repo exists, pulling latest"
-    git -C "$CLONE_DIR" fetch --depth 1 origin "$BRANCH"
-    git -C "$CLONE_DIR" checkout "$BRANCH"
-    git -C "$CLONE_DIR" reset --hard "origin/${BRANCH}"
-  else
-    log "sparse-cloning ${SUBDIR} from ${REPO_URL}"
-    git clone --filter=blob:none --sparse --depth 1 \
-      --branch "$BRANCH" "$REPO_URL" "$CLONE_DIR"
+  # Fresh clone every run — avoids stale sparse/partial state from prior runs
+  # (e.g. a clone made before this subdir existed). Repo is tiny, cost trivial.
+  if [ -e "$CLONE_DIR" ]; then
+    log "removing old clone at ${CLONE_DIR}"
+    rm -rf "$CLONE_DIR"
   fi
 
-  # Always (re)set the sparse path — subdir may differ from a previous run.
+  log "sparse-cloning ${SUBDIR} from ${REPO_URL} (${BRANCH})"
+  git clone --filter=blob:none --sparse --depth 1 \
+    --branch "$BRANCH" "$REPO_URL" "$CLONE_DIR"
   git -C "$CLONE_DIR" sparse-checkout set "$SUBDIR"
 
   [ -d "${CLONE_DIR}/${SUBDIR}" ] || die "subdir '${SUBDIR}' not found in repo"
