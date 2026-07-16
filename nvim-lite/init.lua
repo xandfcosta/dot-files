@@ -53,17 +53,61 @@ local map = vim.keymap.set
 
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
+map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 map("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
 map("n", "<leader>e", "<cmd>Lexplore<cr>", { desc = "Toggle file explorer" })
+map({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save" })
+map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New file" })
 
+-- Window nav
 map("n", "<C-h>", "<C-w>h")
 map("n", "<C-j>", "<C-w>j")
 map("n", "<C-k>", "<C-w>k")
 map("n", "<C-l>", "<C-w>l")
 
+-- Window split / close
+map("n", "<leader>-", "<C-w>s", { desc = "Split below" })
+map("n", "<leader>|", "<C-w>v", { desc = "Split right" })
+map("n", "<leader>wd", "<C-w>c", { desc = "Close window" })
+
+-- Resize windows
+map("n", "<C-Up>",    "<cmd>resize +2<cr>",          { desc = "Increase height" })
+map("n", "<C-Down>",  "<cmd>resize -2<cr>",          { desc = "Decrease height" })
+map("n", "<C-Left>",  "<cmd>vertical resize -2<cr>", { desc = "Decrease width" })
+map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase width" })
+
+-- Buffer nav
+map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+map("n", "<S-l>", "<cmd>bnext<cr>",     { desc = "Next buffer" })
+map("n", "[b",    "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+map("n", "]b",    "<cmd>bnext<cr>",     { desc = "Next buffer" })
+map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
+
+-- Quickfix nav
+map("n", "[q", "<cmd>cprevious<cr>", { desc = "Prev quickfix" })
+map("n", "]q", "<cmd>cnext<cr>",     { desc = "Next quickfix" })
+
+-- Move lines up/down (normal, insert, visual)
+map("n", "<A-j>", "<cmd>m .+1<cr>==",        { desc = "Move line down" })
+map("n", "<A-k>", "<cmd>m .-2<cr>==",        { desc = "Move line up" })
+map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move line down" })
+map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move line up" })
+map("v", "<A-j>", ":m '>+1<cr>gv=gv",        { desc = "Move line down" })
+map("v", "<A-k>", ":m '<-2<cr>gv=gv",        { desc = "Move line up" })
 map("v", "J", ":m '>+1<cr>gv=gv", { desc = "Move line down" })
 map("v", "K", ":m '<-2<cr>gv=gv", { desc = "Move line up" })
 
+-- Indent, keep selection
+map("v", "<", "<gv", { desc = "Indent left" })
+map("v", ">", ">gv", { desc = "Indent right" })
+
+-- Toggles (builtin options)
+map("n", "<leader>uw", "<cmd>set wrap!<cr>",   { desc = "Toggle wrap" })
+map("n", "<leader>us", "<cmd>set spell!<cr>",  { desc = "Toggle spell" })
+map("n", "<leader>ul", "<cmd>set number!<cr>", { desc = "Toggle number" })
+map("n", "<leader>uL", "<cmd>set relativenumber!<cr>", { desc = "Toggle relativenumber" })
+
+-- Keep cursor centred on jumps
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
 map("n", "n", "nzzzv")
@@ -145,10 +189,19 @@ require("lazy").setup({
       dependencies = { "nvim-lua/plenary.nvim" },
       keys = {
         { "<leader><leader>", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-        { "<leader>f", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-        { "<leader>/", "<cmd>Telescope live_grep<cr>",  desc = "Grep" },
-        { "<leader>b", "<cmd>Telescope buffers<cr>",    desc = "Buffers" },
-        { "<leader>h", "<cmd>Telescope help_tags<cr>",  desc = "Help" },
+        { "<leader>f", "<cmd>Telescope find_files<cr>",   desc = "Find files" },
+        { "<leader>fr", "<cmd>Telescope oldfiles<cr>",    desc = "Recent files" },
+        { "<leader>,", "<cmd>Telescope buffers<cr>",      desc = "Switch buffer" },
+        { "<leader>b", "<cmd>Telescope buffers<cr>",      desc = "Buffers" },
+        { "<leader>/", "<cmd>Telescope live_grep<cr>",    desc = "Grep" },
+        { "<leader>sw", "<cmd>Telescope grep_string<cr>", desc = "Grep word", mode = { "n", "v" } },
+        { "<leader>sk", "<cmd>Telescope keymaps<cr>",     desc = "Keymaps" },
+        { "<leader>sh", "<cmd>Telescope help_tags<cr>",   desc = "Help" },
+        { "<leader>h", "<cmd>Telescope help_tags<cr>",    desc = "Help" },
+        { "<leader>sR", "<cmd>Telescope resume<cr>",      desc = "Resume picker" },
+        { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command history" },
+        { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Git commits" },
+        { "<leader>gs", "<cmd>Telescope git_status<cr>",  desc = "Git status" },
       },
     },
 
@@ -156,7 +209,21 @@ require("lazy").setup({
     {
       "lewis6991/gitsigns.nvim",
       event = { "BufReadPre", "BufNewFile" },
-      opts = {},
+      opts = {
+        on_attach = function(buffer)
+          local gs = package.loaded.gitsigns
+          local function m(mode, l, r, desc)
+            vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+          end
+          m("n", "]h", function() gs.nav_hunk("next") end, "Next hunk")
+          m("n", "[h", function() gs.nav_hunk("prev") end, "Prev hunk")
+          m({ "n", "v" }, "<leader>ghs", "<cmd>Gitsigns stage_hunk<cr>", "Stage hunk")
+          m({ "n", "v" }, "<leader>ghr", "<cmd>Gitsigns reset_hunk<cr>", "Reset hunk")
+          m("n", "<leader>ghp", gs.preview_hunk, "Preview hunk")
+          m("n", "<leader>ghu", gs.undo_stage_hunk, "Undo stage hunk")
+          m("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame line")
+        end,
+      },
     },
   },
   install = { colorscheme = { "tokyonight-night", "habamax" } },

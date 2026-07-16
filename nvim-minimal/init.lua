@@ -53,10 +53,17 @@ local map = vim.keymap.set
 
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
+map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 map("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
+
+-- Save (LazyVim parity)
+map({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save" })
 
 -- File explorer toggle
 map("n", "<leader>e", "<cmd>Lexplore<cr>", { desc = "Toggle file explorer" })
+
+-- New file
+map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New file" })
 
 -- Window nav
 map("n", "<C-h>", "<C-w>h")
@@ -64,9 +71,48 @@ map("n", "<C-j>", "<C-w>j")
 map("n", "<C-k>", "<C-w>k")
 map("n", "<C-l>", "<C-w>l")
 
--- Move lines up/down in visual mode
+-- Window split / close
+map("n", "<leader>-", "<C-w>s", { desc = "Split below" })
+map("n", "<leader>|", "<C-w>v", { desc = "Split right" })
+map("n", "<leader>wd", "<C-w>c", { desc = "Close window" })
+
+-- Resize windows
+map("n", "<C-Up>",    "<cmd>resize +2<cr>",          { desc = "Increase height" })
+map("n", "<C-Down>",  "<cmd>resize -2<cr>",          { desc = "Decrease height" })
+map("n", "<C-Left>",  "<cmd>vertical resize -2<cr>", { desc = "Decrease width" })
+map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase width" })
+
+-- Buffer nav
+map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+map("n", "<S-l>", "<cmd>bnext<cr>",     { desc = "Next buffer" })
+map("n", "[b",    "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+map("n", "]b",    "<cmd>bnext<cr>",     { desc = "Next buffer" })
+map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
+
+-- Quickfix nav
+map("n", "[q", "<cmd>cprevious<cr>", { desc = "Prev quickfix" })
+map("n", "]q", "<cmd>cnext<cr>",     { desc = "Next quickfix" })
+
+-- Move lines up/down (normal, insert, visual)
+map("n", "<A-j>", "<cmd>m .+1<cr>==",        { desc = "Move line down" })
+map("n", "<A-k>", "<cmd>m .-2<cr>==",        { desc = "Move line up" })
+map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move line down" })
+map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move line up" })
+map("v", "<A-j>", ":m '>+1<cr>gv=gv",        { desc = "Move line down" })
+map("v", "<A-k>", ":m '<-2<cr>gv=gv",        { desc = "Move line up" })
+-- Legacy J/K in visual (kept)
 map("v", "J", ":m '>+1<cr>gv=gv", { desc = "Move line down" })
 map("v", "K", ":m '<-2<cr>gv=gv", { desc = "Move line up" })
+
+-- Indent, keep selection
+map("v", "<", "<gv", { desc = "Indent left" })
+map("v", ">", ">gv", { desc = "Indent right" })
+
+-- Toggles (builtin options)
+map("n", "<leader>uw", "<cmd>set wrap!<cr>",   { desc = "Toggle wrap" })
+map("n", "<leader>us", "<cmd>set spell!<cr>",  { desc = "Toggle spell" })
+map("n", "<leader>ul", "<cmd>set number!<cr>", { desc = "Toggle number" })
+map("n", "<leader>uL", "<cmd>set relativenumber!<cr>", { desc = "Toggle relativenumber" })
 
 -- Keep cursor centred on jumps
 map("n", "<C-d>", "<C-d>zz")
