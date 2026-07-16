@@ -165,8 +165,11 @@ require("lazy").setup({
     },
 
     -- Treesitter (syntax highlighting; compiles parsers -> needs gcc)
+    -- Pin master: the `main` branch is a rewrite that drops the classic
+    -- `nvim-treesitter.configs` setup API used below.
     {
       "nvim-treesitter/nvim-treesitter",
+      branch = "master",
       build = ":TSUpdate",
       event = { "BufReadPost", "BufNewFile" },
       opts = {
