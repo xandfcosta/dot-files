@@ -80,8 +80,10 @@ clone_config() {
     log "sparse-cloning ${SUBDIR} from ${REPO_URL}"
     git clone --filter=blob:none --sparse --depth 1 \
       --branch "$BRANCH" "$REPO_URL" "$CLONE_DIR"
-    git -C "$CLONE_DIR" sparse-checkout set "$SUBDIR"
   fi
+
+  # Always (re)set the sparse path — subdir may differ from a previous run.
+  git -C "$CLONE_DIR" sparse-checkout set "$SUBDIR"
 
   [ -d "${CLONE_DIR}/${SUBDIR}" ] || die "subdir '${SUBDIR}' not found in repo"
 }
