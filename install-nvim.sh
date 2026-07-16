@@ -84,6 +84,16 @@ clone_config() {
   git -C "$CLONE_DIR" sparse-checkout set "$SUBDIR"
 
   [ -d "${CLONE_DIR}/${SUBDIR}" ] || die "subdir '${SUBDIR}' not found in repo"
+
+  # Drop broken symlinks (e.g. omarchy theme.lua -> ~/.config/omarchy/... which
+  # does not exist on a VPS). LazyVim then falls back to its default colorscheme.
+  local dead
+  dead="$(find "${CLONE_DIR}/${SUBDIR}" -xtype l)"
+  if [ -n "$dead" ]; then
+    log "removing broken symlinks:"
+    echo "$dead"
+    find "${CLONE_DIR}/${SUBDIR}" -xtype l -delete
+  fi
 }
 
 # ---------------------------------------------------------------------------
