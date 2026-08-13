@@ -1,9 +1,0 @@
-[sie][Compressor#0]
-attack=10
-ratio=3
-threshold=-18
-
-[soe][Compressor#0]
-makeup=3
-ratio=2
-threshold=-18

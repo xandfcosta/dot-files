@@ -6,10 +6,6 @@
 source ~/.local/share/omarchy/default/bash/rc
 
 # Add your own exports, aliases, and functions here.
-#
-# Make an alias for invoking commands you use constantly
-# alias p='python'
-
 dev() {
     command -v tmux >/dev/null 2>&1 || {
         echo "tmux is not installed"
@@ -33,19 +29,22 @@ wavoip() {
         tmux detach
     fi
 
+    eval $(keychain --eval --quiet ~/.ssh/prod)
+
     tmux new-session -A -d -s wavoip -n "21"
 
-    for i in 22 23 24; do
+    for i in 22 23 24 25; do
         tmux new-window -t wavoip -n "$i" 2>/dev/null || true
     done
 
     tmux new-window -t wavoip -n MYSQL
 
-    tmux send-keys -t wavoip:1 "ssh root@141.11.73.91"
-    tmux send-keys -t wavoip:2 "ssh root@45.139.208.59"
-    tmux send-keys -t wavoip:3 "ssh root@141.11.73.94"
-    tmux send-keys -t wavoip:4 "ssh root@45.139.208.61"
-    tmux send-keys -t wavoip:MYSQL "lazysql" C-m
+    tmux send-keys -t wavoip:1 "ssh node-21-wavoip"
+    tmux send-keys -t wavoip:2 "ssh node-22-wavoip"
+    tmux send-keys -t wavoip:3 "ssh node-23-wavoip"
+    tmux send-keys -t wavoip:4 "ssh node-24-wavoip"
+    tmux send-keys -t wavoip:5 "ssh node-25-wavoip"
+    tmux send-keys -t wavoip:MYSQL "sqlit" C-m
 
     if [ "$1" != "detach" ]; then
         tmux a -t wavoip
