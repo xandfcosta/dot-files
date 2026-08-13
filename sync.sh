@@ -56,7 +56,6 @@ sync_dir "$config_dir" "hypr/"
 sync_dir "$config_dir" "hyprdynamicmonitors/"
 sync_dir "$config_dir" "nvim/"
 sync_dir "$config_dir" "waybar/"
-sync_dir "$local_dir" "easyeffects/output/"
 
 echo ""
 echo "Syncing files"
