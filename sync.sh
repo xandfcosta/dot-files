@@ -53,9 +53,7 @@ echo "Syncing folders"
 
 sync_dir "$config_dir" "ghostty/"
 sync_dir "$config_dir" "hypr/"
-sync_dir "$config_dir" "hyprdynamicmonitors/"
 sync_dir "$config_dir" "nvim/"
-sync_dir "$config_dir" "waybar/"
 
 echo ""
 echo "Syncing files"
@@ -63,13 +61,14 @@ echo "Syncing files"
 sync_file "$HOME/.bashrc" "bash/" ".bashrc"
 sync_file "$HOME/intel-undervolt/intel-undervolt.conf" "intel-undervolt" "intel-undervolt.conf"
 sync_file "$config_dir/tmux/tmux.conf" "tmux" "tmux.conf"
-sync_file "$config_dir/omarchy/extensions/menu.sh" "omarchy/extensions" "menu.sh"
-sync_file "$HOME/.local/bin/hdm-docked-toggle" "bin" "hdm-docked-toggle"
+sync_file "$config_dir/omarchy/extensions/omarchy-menu.jsonc" "omarchy/extensions" "omarchy-menu.jsonc"
+sync_file "$config_dir/omarchy/shell.json" "omarchy" "shell.json"
 sync_file "$config_dir/uwsm/env-hyprland" "uwsm" "env-hyprland"
 
 echo ""
 echo "Pushing to github"
 
+cd "$git_dir" || exit 1
 git add .
 git commit -q -m "sync: $(date -u)"
 git push -q
