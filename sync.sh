@@ -1,44 +1,39 @@
 #! /bin/bash
 
 sync_dir() {
-  target_dir="$1/$2"
-  sync_dir="$git_dir/$2"
+  # Trailing slashes on the name would double up in the paths below.
+  local name="${2%/}"
+  local target_dir="$1/$name"
+  local sync_dir="$git_dir/$name"
 
   echo "Syncing dir $target_dir -> $sync_dir"
 
   if ! [ -d "$target_dir" ]; then
-    echo "[!] Target dir don't exist ($target_dir)"
+    echo "[!] Target dir doesn't exist ($target_dir)"
     return
   fi
 
-  if [ -d "$sync_dir" ]; then
-    echo "Sync dir already exists, removing..."
-    rm -r "$sync_dir"
-  else
-    echo "[!] Sync dir don't exist"
-    mkdir -p "$sync_dir"
-  fi
-
+  # Always copy onto a missing destination. Creating it first would make cp
+  # nest the source inside it instead (dot-files/hypr/hypr/), which is what
+  # used to happen the first time a directory was ever synced.
+  rm -rf "$sync_dir"
+  mkdir -p "$(dirname "$sync_dir")"
   cp -r "$target_dir" "$sync_dir"
 }
 
 sync_file() {
-  target_file_path=$1
-  sync_dir="$git_dir/$2"
-  sync_file_name=$3
+  local target_file_path="$1"
+  local sync_dir="$git_dir/${2%/}"
+  local sync_file_name="$3"
 
-  echo "Syncing file $target_file_path -> $sync_dir$sync_file_name"
+  echo "Syncing file $target_file_path -> $sync_dir/$sync_file_name"
 
   if ! [ -f "$target_file_path" ]; then
-    echo "[!] Target file don't exist ($target_file_path)"
+    echo "[!] Target file doesn't exist ($target_file_path)"
     return
   fi
 
-  if ! [ -d "$sync_dir" ]; then
-    echo "[!] Sync dir don't exist"
-    mkdir -p "$sync_dir"
-  fi
-
+  mkdir -p "$sync_dir"
   cp "$target_file_path" "$sync_dir/$sync_file_name"
 }
 
@@ -69,8 +64,13 @@ echo ""
 echo "Pushing to github"
 
 cd "$git_dir" || exit 1
-git add .
-git commit -q -m "sync: $(date -u)"
-git push -q
+git add -A
+
+if git diff --cached --quiet; then
+  echo "Nothing changed, skipping commit"
+else
+  git commit -q -m "sync: $(date -u)"
+  git push -q
+fi
 
 echo "Syncronization done"
