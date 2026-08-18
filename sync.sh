@@ -59,6 +59,8 @@ sync_file "$config_dir/tmux/tmux.conf" "tmux" "tmux.conf"
 sync_file "$config_dir/omarchy/extensions/omarchy-menu.jsonc" "omarchy/extensions" "omarchy-menu.jsonc"
 sync_file "$config_dir/omarchy/shell.json" "omarchy" "shell.json"
 sync_file "$config_dir/uwsm/env-hyprland" "uwsm" "env-hyprland"
+# Holds the default browser/editor picked via `omarchy default ...`.
+sync_file "$config_dir/mimeapps.list" "xdg" "mimeapps.list"
 
 echo ""
 echo "Pushing to github"
