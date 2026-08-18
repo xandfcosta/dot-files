@@ -45,7 +45,8 @@ sync_file() {
 # exists and the project itself has to be kept.
 #
 # Whether a plugin is enabled, and where it sits on the bar, lives in
-# omarchy/shell.json, which is synced separately.
+# omarchy/shell.json. The generated installer puts that file back too, last,
+# so a restore is one command instead of two steps in the right order.
 sync_omarchy_plugins() {
   local plugins_dir="$config_dir/omarchy/plugins"
   local sync_dir="$git_dir/omarchy/plugins"
@@ -71,7 +72,7 @@ sync_omarchy_plugins() {
 #
 # Restores the omarchy plugins on a fresh machine. Plugins with an upstream
 # are re-added from it; plugins without one are copied out of this repo.
-# Enablement and bar placement come from omarchy/shell.json.
+# The bar layout (omarchy/shell.json) is restored at the end.
 
 set -euo pipefail
 
@@ -112,6 +113,35 @@ cp -r "\$here/$id" "\$plugins_dir/$id"
 
 EOF
   done
+
+  cat >> "$install_script" <<'FOOTER'
+# The bar layout names these plugins, so it is only safe to drop in once they
+# are all on disk. Hence last.
+shell_json="$here/../shell.json"
+target="$HOME/.config/omarchy/shell.json"
+
+if ! [ -f "$shell_json" ]; then
+  echo "[!] No shell.json in this checkout; bar layout left alone"
+  exit 0
+fi
+
+if [ -f "$target" ] && ! cmp -s "$shell_json" "$target"; then
+  backup="$target.bak-$(date +%Y%m%d%H%M%S)"
+  cp "$target" "$backup"
+  echo "Kept the previous bar layout at $backup"
+fi
+
+mkdir -p "$(dirname "$target")"
+cp "$shell_json" "$target"
+echo "Restored $target"
+
+# A running shell keeps the old layout in memory until it is restarted.
+if command -v omarchy >/dev/null 2>&1 && pgrep -x quickshell >/dev/null 2>&1; then
+  omarchy restart shell || echo "[!] Could not restart the shell; run: omarchy restart shell"
+else
+  echo "Start the shell to pick it up (omarchy restart shell)."
+fi
+FOOTER
 
   chmod +x "$install_script"
 }
