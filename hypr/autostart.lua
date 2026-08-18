@@ -12,7 +12,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("omarchy-launch-browser")
 	hl.exec_cmd(o.launch("xdg-terminal-exec"), { workspace = "2 silent" })
 	hl.exec_cmd(o.launch("discord"), { workspace = "5 silent" })
-	hl.exec_cmd("omarchy-launch-or-focus spotify", { workspace = "special:scratchpad silent" })
+	-- hl.exec_cmd("omarchy-launch-or-focus spotify", { workspace = "special:scratchpad silent" })
 	hl.exec_cmd("omarchy-launch-or-focus obsidian", { workspace = "special:scratchpad silent" })
 end)
 
@@ -23,9 +23,7 @@ end)
 -- is how browsers kept ending up in there. Pinning them to 1 settles it for
 -- every launch path. The tags come from Omarchy's default/hypr/apps/browser.lua
 -- and cover chromium, chrome, brave, edge, vivaldi, firefox, zen and librewolf.
-o.window({ tag = "chromium-based-browser" }, { workspace = "1" })
 o.window({ tag = "firefox-based-browser" }, { workspace = "1" })
 
 o.window("^(discord)$", { workspace = "5 silent" })
 o.window("^([Ss]potify)$", { workspace = "special:scratchpad silent" })
-

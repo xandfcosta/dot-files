@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "xandfcosta.hw-monitor",
+  "name": "Hardware Monitor",
+  "version": "1.1.0",
+  "author": "xandfcosta",
+  "license": "MIT",
+  "description": "Omarchy-native bar panel that names your CPU, RAM, every GPU, and disks, then shows live load bars and temperatures that follow the theme",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "HardwareMonitor.qml"
+  },
+  "barWidget": {
+    "displayName": "Hardware Monitor",
+    "description": "Left click for CPU, RAM, integrated and discrete GPU, and storage with real hardware names and temperatures. Right click opens btop.",
+    "category": "Hardware",
+    "defaultSection": "right",
+    "allowMultiple": false
+  }
+}

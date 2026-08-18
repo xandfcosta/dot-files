@@ -7,9 +7,9 @@
           "id": "omarchy.indicators"
         },
         {
-          "format": "dddd HH:mm",
-          "formatAlt": "d MMMM 'W'ww yyyy",
           "id": "omarchy.clock",
+          "format": "ddd d MMM HH:mm",
+          "formatAlt": "d MMMM 'W'ww yyyy",
           "verticalFormat": "HH\n—\nmm"
         },
         {
@@ -20,6 +20,20 @@
         },
         {
           "id": "omarchy.system-update"
+        },
+        {
+          "id": "quickshell.spotify",
+          "deviceName": "Omarchy Spotify",
+          "idleShutdownMinutes": 15,
+          "showMiniPlayer": "On",
+          "shortcutPlayer": "Omarchy Music app",
+          "showTrackTitle": "On",
+          "showArtistName": "On",
+          "scrollBarText": "Off",
+          "scrollSpeed": "0.25",
+          "audioQuality": "320 kbps",
+          "searchHistory": "[]",
+          "sessionState": "{\"tab\":\"setup\",\"searchText\":\"\",\"searchType\":\"track\",\"libraryType\":\"tracks\",\"homeType\":\"recent\",\"libraryFilter\":\"\",\"librarySort\":\"default\",\"playlistFilter\":\"\",\"playlistSort\":\"default\",\"detailFilter\":\"\",\"detailSort\":\"default\",\"homeFilter\":\"\",\"discoverFilter\":\"\",\"queueFilter\":\"\",\"artistSearchText\":\"\",\"scrollPositions\":{\"home:recent\":0,\"playlist:6mkG7zTAa2W3canPUmIg4M\":0,\"discover\":0,\"detail:spotify:playlist:37i9dQZEVXcIYxsPkQhW7p\":864,\"search:track\":0},\"detailItem\":null,\"selectedPlaylistId\":\"6mkG7zTAa2W3canPUmIg4M\",\"lastRadioPlaylist\":null}"
         }
       ],
       "left": [
@@ -51,6 +65,9 @@
         },
         {
           "id": "omarchy.power"
+        },
+        {
+          "id": "xandfcosta.hw-monitor"
         }
       ]
     },

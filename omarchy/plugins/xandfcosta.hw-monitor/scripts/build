@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Rebuild the sampler. The plugin ships the compiled binary, so this is only
+# needed after editing src/, or to build for another machine.
+#
+#   ./scripts/build
+#
+# CGO is off so the result is a static binary that does not care which libc
+# the target has.
+
+set -euo pipefail
+
+root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+
+command -v go >/dev/null 2>&1 || {
+  echo "error: go toolchain not found; install go first" >&2
+  exit 1
+}
+
+cd "$root/src"
+CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o "$root/scripts/system-usage" .
+echo "built $root/scripts/system-usage"
